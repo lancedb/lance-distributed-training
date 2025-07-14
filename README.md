@@ -162,6 +162,7 @@ can lead to **workload imbalance, and eventually error out.**
 
 <details>
 <summary>Example: DDP error due to imbalanced fragment sampler </summary>
+
 ```python
 
 Epoch 1/10: 300it [07:12,  1.44s/it, loss=1.07]  
