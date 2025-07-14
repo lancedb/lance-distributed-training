@@ -21,7 +21,7 @@ torchrun --nproc-per-node=2  lance_iterable.py --batch_size 128
 There are 2 ways to load data for training models using Lance’s pytorch integration. 
 
 1. Iterable style dataset (`LanceDataset`) - Suitable for streaming. Works with inbuilt distributed samplers
-2. Map-style dataset (`SafeLanceDataset`) - Suitable for
+2. Map-style dataset (`SafeLanceDataset`) - Suitable as a default choice unless you have a specific reason to use an iterable dataset.
 
 A key difference in working with both is that:
 
