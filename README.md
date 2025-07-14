@@ -10,7 +10,7 @@ A key difference in working with both is that:
 - In the **iterable-style** (`LanceDataset`), the data transformation (decoding bytes, applying transforms, stacking) **must happen before the `DataLoader` receives the data**. This is done inside the `to_tensor_fn` (`decode_tensor_image` ).
 
 If your dataset contains a binray feild, it can't be converted to tensor directly, so you need to handle it appropriately in a custom
-`decode_tensor_image`. This is similar to `collate_fn` when using map-style dataset
+`to_tensor_fn`. This is similar to `collate_fn` when using map-style dataset
 <details>
 <summary>Example: Decoding images from LanceDatase using a custom `to_tensor_fn` </summary>
 
