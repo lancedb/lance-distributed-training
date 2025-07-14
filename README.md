@@ -1,5 +1,23 @@
 # Distributed training with Lance
 
+## Examples
+### classification
+1. Create lance dataset of FOOD101:
+```
+python create_datasets/classficiation.py
+```
+2. train using map-style dataset:
+```
+torchrun --nproc-per-node=2  lance_map_style.py --batch_size 128
+```
+
+3. train using iterable dataset:
+```
+torchrun --nproc-per-node=2  lance_iterable.py --batch_size 128
+```
+
+## Docs
+
 There are 2 ways to load data for training models using Lance’s pytorch integration. 
 
 1. Iterable style dataset (`LanceDataset`) - Suitable for streaming. Works with inbuilt distributed samplers
@@ -271,18 +289,3 @@ Because the `lance` samplers don't produce the indices that a map-style `DataLoa
 - **Path B (PyTorch Control):** Use a map-style dataset (like the `LanceMapDataset` we built, or `torchvision`'s) with PyTorch's `DistributedSampler`. **Benefit:** Allows for high-performance parallel data loading with `num_workers > 0`. **Limitation:** Does not use `lance`'s specific sampling logic.
 
 
-## Examples
-### classification
-1. Create lance dataset of FOOD101:
-```
-python create_datasets/classficiation.py
-```
-2. train using map-style dataset:
-```
-torchrun --nproc-per-node=2  lance_map_style.py --batch_size 128
-```
-
-3. train using iterable dataset:
-```
-torchrun --nproc-per-node=2  lance_iterable.py --batch_size 128
-```
