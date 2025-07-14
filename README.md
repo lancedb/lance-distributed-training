@@ -140,23 +140,6 @@ This sampler is **DDP-aware**, but it operates at the fragment level.
 - **Pros:** It can be very I/O efficient. Since each process is assigned whole fragments, it can read them in long, sequential blocks. The documentation notes this is more efficient for large datasets.
 - **Cons:** It can lead to **workload imbalance**. Lance datasets can have fragments of varying sizes (e.g., the last fragment is often smaller). If one rank is assigned fragments that have more total rows than another rank, it will have more batches to process. This imbalance can lead to DDP deadlocks if not handled with padding.
 
-## ShardedBatchSampler
-
-This sampler provides perfectly balanced sharding by operating at the **batch level**, not the fragment level. Calculates row ranges for each batch and deals those ranges out to the different ranks.
-
-This logic gives interleaved batches to each process:
-
-- **Rank 0** gets row ranges for Batch 0, Batch 2, Batch 4, ...
-- **Rank 1** gets row ranges for Batch 1, Batch 3, Batch 5, ...
-
-### Behavior in DDP
-
-This sampler is **DDP-aware** and is the safest choice for balanced distributed training.
-
-- **Pros:** It guarantees that every process receives almost the exact same number of batches, preventing workload imbalance and DDP deadlocks.
-- **Cons:** It can be slightly less I/O efficient than `ShardedFragmentSampler`. To construct a batch, it may need to perform a specific range read from a fragment, which can be less optimal than reading the entire fragment at once.
-
-### ShardedFragmentSampler
 
 can lead to **workload imbalance, and eventually error out.** 
 
@@ -257,6 +240,23 @@ Root Cause (first observed failure):
 (base) jupyter@distributed-training:~/lance-dist-training$ python
 ```
 </details>
+
+## ShardedBatchSampler
+
+This sampler provides perfectly balanced sharding by operating at the **batch level**, not the fragment level. Calculates row ranges for each batch and deals those ranges out to the different ranks.
+
+This logic gives interleaved batches to each process:
+
+- **Rank 0** gets row ranges for Batch 0, Batch 2, Batch 4, ...
+- **Rank 1** gets row ranges for Batch 1, Batch 3, Batch 5, ...
+
+### Behavior in DDP
+
+This sampler is **DDP-aware** and is the safest choice for balanced distributed training.
+
+- **Pros:** It guarantees that every process receives almost the exact same number of batches, preventing workload imbalance and DDP deadlocks.
+- **Cons:** It can be slightly less I/O efficient than `ShardedFragmentSampler`. To construct a batch, it may need to perform a specific range read from a fragment, which can be less optimal than reading the entire fragment at once.
+
 
 you cannot use the `lance` samplers (like `ShardedBatchSampler` or `ShardedFragmentSampler`) with a map-style dataset.
 
