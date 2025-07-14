@@ -43,6 +43,7 @@ In the **map-style** (`SafeLanceDataset`), the `DataLoader`'s workers fetch the 
 
 <details>
 <summary>Example: Decoding images from SafeLanceDataset using `collate_fn` </summary>
+
 ```python
 from lance.torch.data import SafeLanceDataset, get_safe_loader
 
