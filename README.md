@@ -289,3 +289,8 @@ Because the `lance` samplers don't produce the indices that a map-style `DataLoa
 - **Path B (PyTorch Control):** Use a map-style dataset (like the `LanceMapDataset` we built, or `torchvision`'s) with PyTorch's `DistributedSampler`. **Benefit:** Allows for high-performance parallel data loading with `num_workers > 0`. **Limitation:** Does not use `lance`'s specific sampling logic.
 
 
+### Running benchmarks 
+All the scripts log data to wandb dashboard to the same project. Simply run the training scripts and look at the dashboard for 
+training time per eoch or other metircs.
+
+The same training loop implemented on `ImageFolder` dataset via torchvision is provided in torch_version/ folder
