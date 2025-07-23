@@ -69,7 +69,7 @@ def get_sampler(sampler_type, rank, world_size):
         raise ValueError(f"Unsupported sampler type: {sampler_type}")
 
 def get_loader(dataset, num_workers):
-    return DataLoader(dataset, num_workers=num_workers, batch_size=None)
+    return DataLoader(dataset, num_workers=num_workers, batch_size=None, multiprocessing_context=ctx)
 
 def train(rank, local_rank, world_size, args):
     is_distributed = not getattr(args, "no_ddp", False)
