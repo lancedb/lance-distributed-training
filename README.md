@@ -114,17 +114,12 @@ These are some rules of thumb to decide it you should use Map-style or Iterable 
 When You Need High Performance: This is the only way to get the full performance benefit of PyTorch's DataLoader with num_workers > 0. The DataLoader can give each worker a list of indices to fetch in parallel, which is extremely efficient.
 In short this should be your default choice unless you have a specific reason to use an iterable dataset.
 
+Lance doesn't materialise indexes in memory, so you can almost always use map style.
+
 ### Iterable-Style Dataset (`torch.utils.data.IterableDataset` \ `LanceDataset` )
 This type of dataset works like a Python generator or a data stream.
 
 Core Idea: It only knows how to give you the next item when you iterate over it (__iter__). It often has no known length and you cannot ask for the N-th item directly.
-
-** When to Use Iterable-Style: **
-When your data is coming from a source that is a stream and cannot be easily indexed, like a database cursor, or a log that is being written to in real-time.
-
-For Extremely Large Datasets: When your dataset is so massive that even creating an index of all the file paths would be too slow or consume too much memory.
-
-For Custom, Complex Sampling: When you need to implement your own highly specialized sampling or batching logic that PyTorch's standard samplers cannot handle. This is exactly why LanceDataset is iterable. It uses its own custom, highly optimized ShardedBatchSampler or ShardedFragmentSampler that understands the internal structure of .lance files, which a generic PyTorch sampler would not.
 
 ## Lance's sampling guide
 
