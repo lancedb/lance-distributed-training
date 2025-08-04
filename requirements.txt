@@ -2,3 +2,6 @@ pylance
 torch
 torchvision
 lancedb
+scipy
+wandb
+opencv-python
