@@ -280,9 +280,8 @@ The two systems are fundamentally incompatible by design:
 
 Because the `lance` samplers don't produce the indices that a map-style `DataLoader` needs, you cannot use them together. You have to choose one of the two paths:
 
-- **Path A (Lance Control):** Use the iterable `LanceDataset` with a `lance` sampler. **Benefit:** Uses `lance`'s native, optimized sampling. **Limitation:** Must use `num_workers=0`.
-- **Path B (PyTorch Control):** Use a map-style dataset (like the `LanceMapDataset` we built, or `torchvision`'s) with PyTorch's `DistributedSampler`. **Benefit:** Allows for high-performance parallel data loading with `num_workers > 0`. **Limitation:** Does not use `lance`'s specific sampling logic.
-
+- **Torch IterableStyle loader:** Use the iterable `LanceDataset` with a `lance` sampler. **Benefit:** Uses `lance`'s native, optimized sampling.  Must handle num_workers>0 as mentioned [here](https://docs.pytorch.org/docs/stable/data.html#torch.utils.data.IterableDataset).
+- **Map-style loader** Use a map-style dataset (like the `LanceMapDataset` we built, or `torchvision`'s) with PyTorch's `DistributedSampler`. 
 
 ### Running benchmarks 
 All the scripts log data to wandb dashboard to the same project. Simply run the training scripts and look at the dashboard for 
